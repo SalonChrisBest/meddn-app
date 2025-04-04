@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scheiß Merten</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f2f2f2;
+      padding: 30px;
+    }
+    img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+    input {
+      padding: 10px;
+      font-size: 1rem;
+      width: 80%;
+      max-width: 300px;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: black;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .antwort {
+      font-size: 1.2rem;
+      margin-top: 30px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>Scheiß Merten antwortet dir!</h1>
+  <img src="bild-von-merten.jpg" alt="Merten chillt" />
+  <p><input type="text" placeholder="Frag was..." /></p>
+  <button onclick="antwortGeben()">Antwort einholen (auf eigene Gefahr)</button>
+  <div class="antwort" id="antwort"></div>
+
+  <script>
+    const sprueche = [
+      "Ja aaaaaber…",
+      "Noch ein Cuba libre?",
+      "Erst mal ein Sicherheitsbuff.",
+      "Auf jeden Fall ist das meine Katze.",
+      "Ich glaub so ein kleines Häufchen muss ich noch legen.",
+      "Dann rauch doch wenigstens richtig.",
+      "Früher war ich mal schnell.",
+      "Rein hypothetisch… weiß meinst du damit.",
+      "Also, wir können ja abstimmen.",
+      "Wer steht im Kaufvertrag?",
+      "…so asozial!"
+    ];
+
+    function antwortGeben() {
+      const antwort = sprueche[Math.floor(Math.random() * sprueche.length)];
+      document.getElementById("antwort").innerText = antwort;
+    }
+  </script>
+</body>
+</html>
