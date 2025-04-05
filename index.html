@@ -135,10 +135,21 @@
       setTimeout(() => {
         let antwort = sprueche[Math.floor(Math.random() * sprueche.length)];
 
-        // Sonderantworten
-        if (frage.includes("wer ist der bräutigam")) {
-          antwort = "Der mit dem Cuba Libre in der Hand, obviously.";
-        } else if (
+        // Sonderantwort: Hochzeit / Braut
+        if (
+          frage.includes("vera") ||
+          frage.includes("frau") ||
+          frage.includes("hochzeit") ||
+          frage.includes("geheiratet") ||
+          frage.includes("verheiratet") ||
+          frage.includes("braut") ||
+          frage.includes("was macht deine frau")
+        ) {
+          antwort = "Ich hab am 4.4.2025 meine fantastische Frau Vera Merten geheiratet. Sie ist Ärztin – und heute feiern wir richtig! 💍🥂";
+        }
+
+        // Sonderantwort: Trinken
+        else if (
           frage.includes("trink") ||
           frage.includes("bier") ||
           frage.includes("noch ein") ||
@@ -151,6 +162,11 @@
           frage.includes("trinkst du noch")
         ) {
           antwort = "Auf jeden Fall!";
+        }
+
+        // Sonderantwort: Bräutigam
+        else if (frage.includes("wer ist der bräutigam")) {
+          antwort = "Der mit dem Cuba Libre in der Hand, obviously.";
         }
 
         typingEffect(antwort, antwortBox);
