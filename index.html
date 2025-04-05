@@ -103,20 +103,6 @@
   </audio>
 
   <script>
-    const sprueche = [
-      "Ja aaaaaber…",
-      "Noch ein Cuba libre?",
-      "Ich würd da erst mal ein sicherheits-Buff trinken.",
-      "Ich steh im Kaufvertrag, das ist meine Katze!",
-      "Ich glaub so ein kleines 💩 muss ich noch legen.",
-      "Wenn du’s rauchst – dann bitte richtig.",
-      "Früher war ich mal schnell.",
-      "Also, wir können ja abstimmen.",
-      "Warte ich hab da ein Video …",
-      "Schieß schieß schieß",
-      "Wer ist eigentlich dafür das Haag sein Bier ext?"
-    ];
-
     function antwortGeben() {
       const thinking = document.getElementById("thinking");
       const antwortBox = document.getElementById("antwort");
@@ -127,46 +113,82 @@
       antwortBox.textContent = "";
       thinking.style.visibility = "visible";
 
-      // Sound direkt beim Klick
       if (sound) {
         sound.play().catch(e => console.log("Sound blockiert:", e));
       }
 
       setTimeout(() => {
-        let antwort = sprueche[Math.floor(Math.random() * sprueche.length)];
+        let antwort = "Tja. So bin ich.";
 
-        // Sonderantwort: Hochzeit / Braut
-        if (
-          frage.includes("vera") ||
-          frage.includes("frau") ||
-          frage.includes("hochzeit") ||
-          frage.includes("geheiratet") ||
-          frage.includes("verheiratet") ||
-          frage.includes("braut") ||
-          frage.includes("was macht deine frau")
-        ) {
-          antwort = "Ich hab am 4.4.2025 meine fantastische Frau Vera Merten geheiratet. Sie ist Ärztin – und heute feiern wir richtig! 💍🥂";
+        // Mathe-Sonderfunktion
+        const matheMatch = frage.match(/([-+]?\d+(\.\d+)?)(\s*[\+\-\*\/]\s*)([-+]?\d+(\.\d+)?)/);
+        if (matheMatch) {
+          try {
+            const expression = matheMatch[0];
+            const result = eval(expression).toFixed(2).replace(/\.00$/, ""); // schöne Formatierung
+            const sprueche = [
+              `Wow. Das war schwer. Es ist ${result}.`,
+              `Du brauchst mich für DAS? Ergebnis: ${result}.`,
+              `Lass mich kurz nachdenken… ${result}.`,
+              `Mathe-König meldet sich: ${result}.`
+            ];
+            antwort = sprueche[Math.floor(Math.random() * sprueche.length)];
+          } catch (e) {
+            antwort = "Mathe war nicht deine Frage. Aber meine Antwort ist trotzdem: 42.";
+          }
         }
 
-        // Sonderantwort: Trinken
-        else if (
-          frage.includes("trink") ||
-          frage.includes("bier") ||
-          frage.includes("noch ein") ||
-          frage.includes("noch was") ||
-          frage.includes("bar") ||
-          frage.includes("saufen") ||
-          frage.includes("exen") ||
-          frage.includes("soll ich noch") ||
-          frage.includes("trinken wir noch") ||
-          frage.includes("trinkst du noch")
-        ) {
-          antwort = "Auf jeden Fall!";
-        }
-
-        // Sonderantwort: Bräutigam
+        // Klassische Regeln
         else if (frage.includes("wer ist der bräutigam")) {
           antwort = "Der mit dem Cuba Libre in der Hand, obviously.";
+        } else if (
+          frage.includes("trink") || frage.includes("bier") ||
+          frage.includes("bar") || frage.includes("saufen") ||
+          frage.includes("exen")
+        ) {
+          antwort = "Auf jeden Fall!";
+        } else if (
+          frage.includes("vera") || frage.includes("frau") ||
+          frage.includes("hochzeit") || frage.includes("geheiratet") ||
+          frage.includes("verheiratet") || frage.includes("braut")
+        ) {
+          antwort = "Ich hab am 4.4.2025 meine fantastische Frau Vera Merten geheiratet. Sie ist Ärztin – und heute feiern wir richtig! 💍🥂";
+        } else if (
+          frage.includes("abstimmen") || frage.includes("entscheidung") || frage.includes("mehrheit")
+        ) {
+          antwort = "Also, wir können ja abstimmen.";
+        } else if (
+          frage.includes("katze") || frage.includes("haustier") || frage.includes("tier")
+        ) {
+          antwort = "Ich steh im Kaufvertrag, das ist meine Katze!";
+        } else if (
+          frage.includes("video") || frage.includes("aufnahme") || frage.includes("beweis")
+        ) {
+          antwort = "Warte ich hab da ein Video …";
+        } else if (
+          frage.includes("schnell") || frage.includes("rennen") || frage.includes("laufen")
+        ) {
+          antwort = "Früher war ich mal schnell.";
+        } else if (
+          frage.includes("rauch") || frage.includes("zigarette") || frage.includes("anzünden")
+        ) {
+          antwort = "Wenn du’s rauchst – dann bitte richtig.";
+        } else if (
+          frage.includes("haufen") || frage.includes("klo") || frage.includes("muss") || frage.includes("dringend")
+        ) {
+          antwort = "Ich glaub so ein kleines 💩 muss ich noch legen.";
+        } else if (
+          frage.includes("cuba") || frage.includes("rum") || frage.includes("cocktail")
+        ) {
+          antwort = "Noch ein Cuba libre?";
+        } else if (
+          frage.includes("ja aber") || frage.includes("vielleicht") || frage.includes("hmmm")
+        ) {
+          antwort = "Ja aaaaaber…";
+        } else if (
+          frage.includes("haag") || frage.includes("wer ist dafür") || frage.includes("ext")
+        ) {
+          antwort = "Wer ist eigentlich dafür das Haag sein Bier ext?";
         }
 
         typingEffect(antwort, antwortBox);
