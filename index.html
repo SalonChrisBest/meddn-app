@@ -133,7 +133,7 @@
             ];
             antwort = sprueche[Math.floor(Math.random() * sprueche.length)];
           } catch (e) {
-            antwort = "Also Mathe war’s nicht, aber reden wir später nochmal drüber.";
+            antwort = "Mathe war’s nicht. Aber klingt wichtig.";
           }
         } else if (frage.includes("wer ist der bräutigam")) {
           antwort = "Der mit dem Cuba Libre in der Hand, obviously.";
@@ -185,6 +185,18 @@
           frage.includes("haag") || frage.includes("wer ist dafür") || frage.includes("ext")
         ) {
           antwort = "Wer ist eigentlich dafür das Haag sein Bier ext?";
+        } else if (
+          frage.includes("vera dazu") || frage.includes("was sagt vera")
+        ) {
+          antwort = "Sie nickt. Sie weiß, wie’s läuft.";
+        } else if (
+          frage.includes("anzug") || frage.includes("outfit")
+        ) {
+          antwort = "Der wurde mir zugeworfen. Ich hab ihn einfach angezogen.";
+        } else if (
+          frage.includes("wie viele") && frage.includes("getrunken")
+        ) {
+          antwort = "Das lässt sich nicht mehr eindeutig belegen.";
         }
 
         typingEffect(antwort, antwortBox);
