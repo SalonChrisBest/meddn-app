@@ -48,7 +48,7 @@
       background-color: #ffffff;
       border-radius: 15px;
       padding: 20px;
-      max-width: 300px;
+      max-width: 320px;
       font-size: 1.6rem;
       font-weight: bold;
       color: #333;
@@ -92,7 +92,7 @@
   <p class="intro">Hi, ich bin Stefan – der wohl schlauste Bräutigam hier im Saal. Frag mich was! 😎</p>
   <div class="bild-container">
     <img src="bild-von-merten.JPG" alt="Merten chillt" />
-    <div class="antwort" id="antwort" onclick="antwortReaktion()"></div>
+    <div class="antwort" id="antwort" onclick="antwortReaktion(event)"></div>
   </div>
   <p><input type="text" placeholder="Frag was..." id="frageInput" /></p>
   <button onclick="antwortGeben()">Antwort einholen (auf eigene Gefahr)</button>
@@ -103,6 +103,8 @@
   </audio>
 
   <script>
+    // Weiter in Teil 2...
+  </script>
     function antwortGeben() {
       const antwortBox = document.getElementById("antwort");
       const frage = document.getElementById("frageInput").value.toLowerCase();
@@ -110,7 +112,7 @@
       const sound = document.getElementById("bingSound");
 
       antwortBox.style.display = "none";
-      antwortBox.textContent = "";
+      antwortBox.innerHTML = "";
       thinking.style.visibility = "visible";
 
       if (sound) sound.play().catch(e => console.log("Sound blockiert:", e));
@@ -123,169 +125,84 @@
         "Was für 'ne Frage – natürlich!",
         "Noch einen für Vera, einen für mich, und einen für dich!"
       ];
-      const bräutigamAntworten = [
-        "Der mit dem Cuba Libre in der Hand.",
-        "Ich bin der, der sich heute traut – und zwar alles.",
-        "Der, der 'Ja' gesagt hat – freiwillig!"
+      const fallbackAntworten = [
+        "Mh... da sollten wir zur Sicherheit erst mal einen Buff trinken.",
+        "Buff-Time! Danach reden wir weiter.",
+        "Ich brauch nen Buff, um diese Frage zu verdauen.",
+        "Puh… schwierige Frage. Erst mal ein Buff.",
+        "Ich sag da nix – Buff-Time ist angesagt.",
+        "Buff regelt. Immer.",
+        "Ein Buff auf diese Frage!"
       ];
-      const veraAntworten = [
-        "Ich hab am 4.4.2025 meine fantastische Frau Vera Merten geheiratet. Sie ist Ärztin – und heute feiern wir richtig! 💍🥂",
-        "Vera ist meine Frau. Und smarter als Google.",
-        "Verheiratet. Mit Herz, Stil und einer Ärztin."
+      const emotionAntworten = [
+        "Ich fühl mich wie ein Champagnerkorken kurz vor dem Knall!",
+        "Nervös? Niemals. Nur leicht schaumgebremst.",
+        "Mir geht’s wie der Stimmung – bestens.",
+        "Ich bin ein Vulkan aus Gefühl und Cuba Libre."
       ];
-      const abstimmenAntworten = [
-        "Also, wir können ja abstimmen.",
-        "Okay, Hand hoch – wer ist dafür?"
+      const fussballAntworten = [
+        "Ich war die Nummer 9 – jetzt Alt-Herren bei TuS Dexheim. Chris klatscht immer noch.",
+        "TuS Dexheim. Seit 1848. Ich war die 9, Chris war die Tribüne.",
+        "Ballkunst? Klar. Nur mein Knie weiß das nicht.",
+        "Alt, aber gefährlich. Vor allem im Strafraum."
       ];
-      const katzeAntworten = [
-        "Ich steh im Kaufvertrag, das ist meine Katze!",
-        "Die Katze war zuerst da. Ich bin eingezogen.",
-        "Das ist nicht irgendeine Katze – das ist die Katze!"
-      ];
-      const videoAntwort = "Warte… ich hab da ein Video. 😎";
-      const schnellAntworten = [
-        "Früher war ich mal schnell.",
-        "Schnell war ich mal. Jetzt bin ich clever.",
-        "Ich bin nicht langsam – ich genieße nur den Moment."
-      ];
-      const rauchAntworten = [
-        "Wenn du’s rauchst – dann bitte richtig.",
-        "Zigarette ist an. Haltung bitte auch.",
-        "Einmal mit Stil rauchen, bitte."
-      ];
-      const kloAntworten = [
-        "Ich glaub so ein kleines 💩 muss ich noch legen.",
-        "TMI? Vielleicht. Aber ja.",
-        "Dringend. Jetzt."
-      ];
-      const cubaAntworten = [
-        "Noch ein Cuba libre?",
-        "Cuba Libre ist mein zweiter Vorname.",
-        "Nur wenn du auch einen nimmst."
-      ];
-      const jaAberAntworten = [
-        "Ja aaaaaber…",
-        "Mhmm… vielleicht…",
-        "Könnte sein. Könnte aber auch nicht sein."
-      ];
-      const haagAntworten = [
-        "Wer ist eigentlich dafür das Haag sein Bier ext?",
-        "Ich bin dafür, dass Haag jetzt liefert.",
-        "Team Haag – ex oder nix!"
-      ];
-      const veraDazuAntworten = [
-        "Sie nickt. Sie weiß, wie’s läuft.",
-        "Vera sagt ja. Oder hat genickt. Ich nehm beides.",
-        "Sie ist okay damit. Wahrscheinlich."
-      ];
-      const anzugAntworten = [
-        "Der wurde mir zugeworfen. Ich hab ihn einfach angezogen.",
-        "Outfit approved – von mir selbst.",
-        "Passt, sitzt, wackelt – reicht."
-      ];
-      const wievieleAntworten = [
-        "Das lässt sich nicht mehr eindeutig belegen.",
-        "Zählen ist schwierig – feiern ist wichtiger.",
-        "Die genaue Zahl kennt nur Vera. Und sie schweigt."
+      const pizzaAntworten = [
+        "Ich bin Stefano – Herrscher über den Pizzastein!",
+        "Meine Pizza macht jede Nonna nervös.",
+        "Kochen kann ich. Aber Pizza? Ich leb sie.",
+        "In meiner Küche regiert der Teig."
       ];
 
-      setTimeout(() => {
-        let antwort = "const fallbackAntworten = [
-  "Mh... da sollten wir zur Sicherheit erst mal einen Buff trinken.",
-  "Puh, da hilft nur ein Buff.",
-  "Dazu brauch ich erst mal einen Schluck.",
-  "Buff-Time! Danach reden wir weiter.",
-  "Ich sag mal nix – Buff regelt."
-];
-
-antwort = fallbackAntworten[Math.floor(Math.random() * fallbackAntworten.length)];
-
-
-        const frageMatch = frage.toLowerCase();
-
-        const matheMatch = frageMatch.match(/([-+]?\d+(\.\d+)?)(\s*[\+\-\*\/]\s*)([-+]?\d+(\.\d+)?)/);
-        if (matheMatch) {
-          try {
-            const result = eval(matheMatch[0]).toFixed(2).replace(/\.00$/, "");
-            const sprueche = [
-              `Wow. Das war schwer. Es ist ${result}.`,
-              `Du brauchst mich für DAS? Ergebnis: ${result}.`,
-              `Lass mich kurz nachdenken… ${result}.`,
-              `Mathe-König meldet sich: ${result}.`
-            ];
-            antwort = sprueche[Math.floor(Math.random() * sprueche.length)];
-          } catch {
-            antwort = "Ich bin zu klug für kaputte Aufgaben.";
-          }
-        } else if (frageMatch.includes("video") || frageMatch.includes("beweis") || frageMatch.includes("aufnahme")) {
-          antwortBox.innerHTML = `
-            ${videoAntwort}
-            <br><br>
-            <video width="100%" controls>
-              <source src="Sepp.MP4" type="video/mp4">
-              Dein Browser kann das Video leider nicht abspielen.
-            </video>
-          `;
-          thinking.style.visibility = "hidden";
-          antwortBox.style.display = "block";
-          return;
-        } else if (frageMatch.includes("trink") || frageMatch.includes("bier") || frageMatch.includes("bar") || frageMatch.includes("saufen") || frageMatch.includes("exen")) {
-          antwort = trinkenAntworten[Math.floor(Math.random() * trinkenAntworten.length)];
-        } else if (frageMatch.includes("bräutigam")) {
-          antwort = bräutigamAntworten[Math.floor(Math.random() * bräutigamAntworten.length)];
-        } else if (frageMatch.includes("vera") || frageMatch.includes("frau") || frageMatch.includes("hochzeit") || frageMatch.includes("geheiratet") || frageMatch.includes("verheiratet") || frageMatch.includes("braut")) {
-          antwort = veraAntworten[Math.floor(Math.random() * veraAntworten.length)];
-        } else if (frageMatch.includes("abstimmen") || frageMatch.includes("entscheidung") || frageMatch.includes("mehrheit")) {
-          antwort = abstimmenAntworten[Math.floor(Math.random() * abstimmenAntworten.length)];
-        } else if (frageMatch.includes("katze") || frageMatch.includes("haustier") || frageMatch.includes("tier")) {
-          antwort = katzeAntworten[Math.floor(Math.random() * katzeAntworten.length)];
-        } else if (frageMatch.includes("schnell") || frageMatch.includes("rennen") || frageMatch.includes("laufen")) {
-          antwort = schnellAntworten[Math.floor(Math.random() * schnellAntworten.length)];
-        } else if (frageMatch.includes("rauch") || frageMatch.includes("zigarette") || frageMatch.includes("anzünden")) {
-          antwort = rauchAntworten[Math.floor(Math.random() * rauchAntworten.length)];
-        } else if (frageMatch.includes("klo") || frageMatch.includes("muss") || frageMatch.includes("dringend")) {
-          antwort = kloAntworten[Math.floor(Math.random() * kloAntworten.length)];
-        } else if (frageMatch.includes("cuba") || frageMatch.includes("rum") || frageMatch.includes("cocktail")) {
-          antwort = cubaAntworten[Math.floor(Math.random() * cubaAntworten.length)];
-        } else if (frageMatch.includes("ja aber") || frageMatch.includes("vielleicht") || frageMatch.includes("hmmm")) {
-          antwort = jaAberAntworten[Math.floor(Math.random() * jaAberAntworten.length)];
-        } else if (frageMatch.includes("haag") || frageMatch.includes("wer ist dafür") || frageMatch.includes("ext")) {
-          antwort = haagAntworten[Math.floor(Math.random() * haagAntworten.length)];
-        } else if (frageMatch.includes("vera dazu") || frageMatch.includes("was sagt vera")) {
-          antwort = veraDazuAntworten[Math.floor(Math.random() * veraDazuAntworten.length)];
-        } else if (frageMatch.includes("anzug") || frageMatch.includes("outfit")) {
-          antwort = anzugAntworten[Math.floor(Math.random() * anzugAntworten.length)];
-        } else if (frageMatch.includes("wie viele") && frageMatch.includes("getrunken")) {
-          antwort = wievieleAntworten[Math.floor(Math.random() * wievieleAntworten.length)];
+      const matheMatch = frage.match(/([-+]?\d+(\.\d+)?)(\s*[\+\-\*\/]\s*)([-+]?\d+(\.\d+)?)/);
+      if (matheMatch) {
+        try {
+          const result = eval(matheMatch[0]).toFixed(2).replace(/\.00$/, "");
+          const matheAntworten = [
+            `Wow. Das war schwer. Es ist ${result}.`,
+            `Du brauchst mich für DAS? Ergebnis: ${result}.`,
+            `Lass mich kurz nachdenken… ${result}.`,
+            `Mathe-König meldet sich: ${result}.`
+          ];
+          antwortBox.innerText = matheAntworten[Math.floor(Math.random() * matheAntworten.length)];
+        } catch {
+          antwortBox.innerText = fallbackAntworten[Math.floor(Math.random() * fallbackAntworten.length)];
         }
+      } else if (frage.includes("video") || frage.includes("aufnahme") || frage.includes("beweis")) {
+        antwortBox.innerHTML = `
+          Warte… ich hab da ein Video. 😎
+          <br><br>
+          <video width="100%" controls>
+            <source src="Sepp.MP4" type="video/mp4">
+            Dein Browser kann das Video leider nicht abspielen.
+          </video>
+        `;
+      } else if (frage.includes("trink") || frage.includes("bier") || frage.includes("shot") || frage.includes("saufen") || frage.includes("prost") || frage.includes("durstig")) {
+        antwortBox.innerText = trinkenAntworten[Math.floor(Math.random() * trinkenAntworten.length)];
+      } else if (frage.includes("wie geht") || frage.includes("fühl") || frage.includes("nervös") || frage.includes("aufgeregt")) {
+        antwortBox.innerText = emotionAntworten[Math.floor(Math.random() * emotionAntworten.length)];
+      } else if (frage.includes("fußball") || frage.includes("nummer 9") || frage.includes("verein") || frage.includes("sport")) {
+        antwortBox.innerText = fussballAntworten[Math.floor(Math.random() * fussballAntworten.length)];
+      } else if (frage.includes("pizza") || frage.includes("kochen") || frage.includes("küche") || frage.includes("essen") || frage.includes("ofen")) {
+        antwortBox.innerText = pizzaAntworten[Math.floor(Math.random() * pizzaAntworten.length)];
+      } else {
+        antwortBox.innerText = fallbackAntworten[Math.floor(Math.random() * fallbackAntworten.length)];
+      }
 
-        antwortBox.textContent = "";
-        typingEffect(antwort, antwortBox);
-        thinking.style.visibility = "hidden";
-        antwortBox.style.display = "block";
-      }, 1500);
+      thinking.style.visibility = "hidden";
+      antwortBox.style.display = "block";
     }
 
-    function typingEffect(text, element) {
-      let i = 0;
-      element.textContent = "";
-      const interval = setInterval(() => {
-        element.textContent += text.charAt(i);
-        i++;
-        if (i >= text.length) clearInterval(interval);
-      }, 40);
-    }
-
-    function antwortReaktion() {
-      document.getElementById("antwort").textContent = "Tja. So bin ich.";
+    function antwortReaktion(event) {
+      // Klick auf Video soll Event ignorieren
+      if (event && event.target.tagName === "VIDEO") return;
+      document.getElementById("antwort").innerText = "Tja. So bin ich.";
     }
 
     function triggerGeheimnis() {
       const antwortBox = document.getElementById("antwort");
-      antwortBox.textContent = "Ey! Hast du nichts Besseres zu tun?!";
+      antwortBox.innerText = "Ey! Hast du nichts Besseres zu tun?!";
       antwortBox.style.display = "block";
     }
   </script>
 </body>
 </html>
-
