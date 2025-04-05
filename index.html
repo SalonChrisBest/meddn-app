@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scheiß Merten</title>
+  <title>💩 Merten</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -34,15 +34,35 @@
       cursor: pointer;
     }
     .antwort {
-      font-size: 1.2rem;
       margin-top: 30px;
+      display: inline-block;
+      background-color: #ffffff;
+      border-radius: 15px;
+      padding: 20px;
+      max-width: 90%;
+      font-size: 1.6rem;
       font-weight: bold;
+      color: #333;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    .antwort::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 20px solid #ffffff;
     }
   </style>
 </head>
 <body>
-  <h1>Scheiß Merten antwortet dir!</h1>
-  <img src="bild-von-merten.JPG" alt="Merten chillt" />
+  <h1>💩 Merten antwortet dir!</h1>
+  <img src="bild-von-merten.jpg" alt="Merten chillt" />
   <p><input type="text" placeholder="Frag was..." /></p>
   <button onclick="antwortGeben()">Antwort einholen (auf eigene Gefahr)</button>
   <div class="antwort" id="antwort"></div>
@@ -64,7 +84,9 @@
 
     function antwortGeben() {
       const antwort = sprueche[Math.floor(Math.random() * sprueche.length)];
-      document.getElementById("antwort").innerText = antwort;
+      const antwortBox = document.getElementById("antwort");
+      antwortBox.innerText = antwort;
+      antwortBox.style.display = "inline-block";
     }
   </script>
 </body>
