@@ -73,6 +73,7 @@
       margin-top: 20px;
       color: #666;
       animation: blink 1s infinite;
+      visibility: hidden;
     }
     @keyframes blink {
       0%, 100% { opacity: 1; }
@@ -95,7 +96,7 @@
   </div>
   <p><input type="text" placeholder="Frag was..." id="frageInput" /></p>
   <button onclick="antwortGeben()">Antwort einholen (auf eigene Gefahr)</button>
-  <div class="thinking" id="thinking" style="display: none;">Merten denkt nach… 🤔</div>
+  <div class="thinking" id="thinking">Merten denkt nach… 🤔</div>
   <div class="hidden-trigger" onclick="triggerGeheimnis()">(Nicht klicken!)</div>
   <audio id="bingSound">
     <source src="https://www.soundjay.com/button/sounds/button-16.mp3" type="audio/mpeg">
@@ -105,18 +106,15 @@
     const sprueche = [
       "Ja aaaaaber…",
       "Noch ein Cuba libre?",
-      "Erst mal ein Sicherheitsbuff.",
-      "Auf jeden Fall ist das meine Katze.",
-      "Ich glaub so ein kleines Häufchen muss ich noch legen.",
-      "Dann rauch doch wenigstens richtig.",
+      "Ich würd da erst mal ein sicherheits-Buff trinken.",
+      "Ich steh im Kaufvertrag, das ist meine Katze!",
+      "Ich glaub so ein kleines 💩 muss ich noch legen.",
+      "Wenn du’s rauchst – dann bitte richtig.",
       "Früher war ich mal schnell.",
-      "Rein hypothetisch… weiß meinst du damit.",
       "Also, wir können ja abstimmen.",
-      "Wer steht im Kaufvertrag ?",
-      "…so asozial!",
       "Warte ich hab da ein Video …",
       "Schieß schieß schieß",
-      "Wer ist dafür das?"
+      "Wer ist eigentlich dafür das Haag sein Bier ext?"
     ];
 
     function antwortGeben() {
@@ -127,19 +125,30 @@
 
       antwortBox.style.display = "none";
       antwortBox.textContent = "";
-      thinking.style.display = "block";
+      thinking.style.visibility = "visible";
+
+      // Sound direkt beim Klick abspielen
+      if (sound) {
+        sound.play().catch(e => console.log("Sound blockiert:", e));
+      }
 
       setTimeout(() => {
         let antwort = sprueche[Math.floor(Math.random() * sprueche.length)];
 
+        // Sonderantworten
         if (frage.includes("wer ist der bräutigam")) {
           antwort = "Der mit dem Cuba Libre in der Hand, obviously.";
+        } else if (
+          frage.includes("trinkst du noch ein") ||
+          frage.includes("trinken wir noch ein") ||
+          frage.includes("soll haag sein bier exen")
+        ) {
+          antwort = "Auf jeden Fall!";
         }
 
         typingEffect(antwort, antwortBox);
-        thinking.style.display = "none";
+        thinking.style.visibility = "hidden";
         antwortBox.style.display = "block";
-        sound.play();
       }, 1500);
     }
 
