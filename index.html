@@ -118,14 +118,13 @@
       }
 
       setTimeout(() => {
-        let antwort = "Tja. So bin ich.";
+        let antwort = "Mh... da sollten wir zur Sicherheit erst mal einen Puff trinken.";
 
-        // Mathe-Sonderfunktion
         const matheMatch = frage.match(/([-+]?\d+(\.\d+)?)(\s*[\+\-\*\/]\s*)([-+]?\d+(\.\d+)?)/);
         if (matheMatch) {
           try {
             const expression = matheMatch[0];
-            const result = eval(expression).toFixed(2).replace(/\.00$/, ""); // schöne Formatierung
+            const result = eval(expression).toFixed(2).replace(/\.00$/, "");
             const sprueche = [
               `Wow. Das war schwer. Es ist ${result}.`,
               `Du brauchst mich für DAS? Ergebnis: ${result}.`,
@@ -134,12 +133,9 @@
             ];
             antwort = sprueche[Math.floor(Math.random() * sprueche.length)];
           } catch (e) {
-            antwort = "Mathe war nicht deine Frage. Aber meine Antwort ist trotzdem: 42.";
+            antwort = "Also Mathe war’s nicht, aber reden wir später nochmal drüber.";
           }
-        }
-
-        // Klassische Regeln
-        else if (frage.includes("wer ist der bräutigam")) {
+        } else if (frage.includes("wer ist der bräutigam")) {
           antwort = "Der mit dem Cuba Libre in der Hand, obviously.";
         } else if (
           frage.includes("trink") || frage.includes("bier") ||
