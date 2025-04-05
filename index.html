@@ -54,6 +54,7 @@
       color: #333;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       display: none;
+      cursor: pointer;
     }
     .antwort::after {
       content: '';
@@ -76,6 +77,12 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0; }
     }
+    .hidden-trigger {
+      font-size: 0.8rem;
+      color: #aaa;
+      cursor: pointer;
+      margin-top: 30px;
+    }
   </style>
 </head>
 <body>
@@ -83,11 +90,15 @@
   <p class="intro">Hi, ich bin Stefan – der wohl schlauste Bräutigam hier im Saal. Frag mich was! 😎</p>
   <div class="bild-container">
     <img src="bild-von-merten.JPG" alt="Merten chillt" />
-    <div class="antwort" id="antwort"></div>
+    <div class="antwort" id="antwort" onclick="antwortReaktion()"></div>
   </div>
-  <p><input type="text" placeholder="Frag was..." /></p>
+  <p><input type="text" placeholder="Frag was..." id="frageInput" /></p>
   <button onclick="antwortGeben()">Antwort einholen (auf eigene Gefahr)</button>
   <div class="thinking" id="thinking" style="display: none;">Merten denkt nach… 🤔</div>
+  <div class="hidden-trigger" onclick="triggerGeheimnis()">(Nicht klicken!)</div>
+  <audio id="bingSound">
+    <source src="https://www.soundjay.com/button/sounds/button-16.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
     const sprueche = [
@@ -110,16 +121,46 @@
     function antwortGeben() {
       const thinking = document.getElementById("thinking");
       const antwortBox = document.getElementById("antwort");
+      const frage = document.getElementById("frageInput").value.toLowerCase();
+      const sound = document.getElementById("bingSound");
 
       antwortBox.style.display = "none";
+      antwortBox.innerText = "";
       thinking.style.display = "block";
 
       setTimeout(() => {
-        const antwort = sprueche[Math.floor(Math.random() * sprueche.length)];
-        antwortBox.innerText = antwort;
+        let antwort = sprueche[Math.floor(Math.random() * sprueche.length)];
+
+        if (frage.includes("wer ist der bräutigam")) {
+          antwort = "Der mit dem Cuba Libre in der Hand, obviously.";
+        }
+
+        typingEffect(antwort, antwortBox);
         thinking.style.display = "none";
         antwortBox.style.display = "block";
+        sound.play();
       }, 1500);
+    }
+
+    function antwortReaktion() {
+      const antwortBox = document.getElementById("antwort");
+      antwortBox.innerText = "Tja. So bin ich.";
+    }
+
+    function triggerGeheimnis() {
+      const antwortBox = document.getElementById("antwort");
+      antwortBox.innerText = "Ey! Hast du nichts Besseres zu tun?!";
+      antwortBox.style.display = "block";
+    }
+
+    function typingEffect(text, element) {
+      let i = 0;
+      element.innerText = "";
+      const interval = setInterval(() => {
+        element.innerText += text.charAt(i);
+        i++;
+        if (i >= text.length) clearInterval(interval);
+      }, 50);
     }
   </script>
 </body>
