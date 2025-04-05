@@ -11,11 +11,14 @@
       background-color: #f2f2f2;
       padding: 30px;
     }
+    .bild-container {
+      position: relative;
+      display: inline-block;
+    }
     img {
       width: 100%;
       max-width: 400px;
       border-radius: 10px;
-      margin-bottom: 20px;
     }
     .intro {
       font-size: 1.2rem;
@@ -39,26 +42,24 @@
       cursor: pointer;
     }
     .antwort {
-      margin-top: 30px;
-      display: inline-block;
+      position: absolute;
+      top: 10px;
+      right: -10px;
       background-color: #ffffff;
       border-radius: 15px;
       padding: 20px;
-      max-width: 90%;
+      max-width: 250px;
       font-size: 1.6rem;
       font-weight: bold;
       color: #333;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      position: relative;
-      opacity: 1;
-      transition: opacity 0.3s ease;
+      display: none;
     }
     .antwort::after {
       content: '';
       position: absolute;
       bottom: -20px;
-      left: 50%;
-      transform: translateX(-50%);
+      left: 30px;
       width: 0;
       height: 0;
       border-left: 15px solid transparent;
@@ -80,11 +81,13 @@
 <body>
   <h1>💩 Merten antwortet dir!</h1>
   <p class="intro">Hi, ich bin Stefan – der wohl schlauste Bräutigam hier im Saal. Frag mich was! 😎</p>
-  <img src="bild-von-merten.JPG" alt="Merten chillt" />
+  <div class="bild-container">
+    <img src="bild-von-merten.jpg" alt="Merten chillt" />
+    <div class="antwort" id="antwort"></div>
+  </div>
   <p><input type="text" placeholder="Frag was..." /></p>
   <button onclick="antwortGeben()">Antwort einholen (auf eigene Gefahr)</button>
   <div class="thinking" id="thinking" style="display: none;">Merten denkt nach… 🤔</div>
-  <div class="antwort" id="antwort" style="display: none;"></div>
 
   <script>
     const sprueche = [
@@ -112,7 +115,7 @@
         const antwort = sprueche[Math.floor(Math.random() * sprueche.length)];
         antwortBox.innerText = antwort;
         thinking.style.display = "none";
-        antwortBox.style.display = "inline-block";
+        antwortBox.style.display = "block";
       }, 1500);
     }
   </script>
