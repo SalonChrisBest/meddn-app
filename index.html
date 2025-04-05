@@ -55,6 +55,7 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       display: none;
       cursor: pointer;
+      white-space: pre-wrap;
     }
     .antwort::after {
       content: '';
@@ -89,7 +90,7 @@
   <h1>💩 Merten antwortet dir!</h1>
   <p class="intro">Hi, ich bin Stefan – der wohl schlauste Bräutigam hier im Saal. Frag mich was! 😎</p>
   <div class="bild-container">
-    <img src="bild-von-merten.JPG" alt="Merten chillt" />
+    <img src="bild-von-merten.jpg" alt="Merten chillt" />
     <div class="antwort" id="antwort" onclick="antwortReaktion()"></div>
   </div>
   <p><input type="text" placeholder="Frag was..." id="frageInput" /></p>
@@ -125,7 +126,7 @@
       const sound = document.getElementById("bingSound");
 
       antwortBox.style.display = "none";
-      antwortBox.innerText = "";
+      antwortBox.textContent = "";
       thinking.style.display = "block";
 
       setTimeout(() => {
@@ -144,20 +145,20 @@
 
     function antwortReaktion() {
       const antwortBox = document.getElementById("antwort");
-      antwortBox.innerText = "Tja. So bin ich.";
+      antwortBox.textContent = "Tja. So bin ich.";
     }
 
     function triggerGeheimnis() {
       const antwortBox = document.getElementById("antwort");
-      antwortBox.innerText = "Ey! Hast du nichts Besseres zu tun?!";
+      antwortBox.textContent = "Ey! Hast du nichts Besseres zu tun?!";
       antwortBox.style.display = "block";
     }
 
     function typingEffect(text, element) {
       let i = 0;
-      element.innerText = "";
+      element.textContent = "";
       const interval = setInterval(() => {
-        element.innerText += text.charAt(i);
+        element.textContent += text.charAt(i);
         i++;
         if (i >= text.length) clearInterval(interval);
       }, 50);
