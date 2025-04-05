@@ -17,6 +17,11 @@
       border-radius: 10px;
       margin-bottom: 20px;
     }
+    .intro {
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+      color: #444;
+    }
     input {
       padding: 10px;
       font-size: 1rem;
@@ -45,6 +50,8 @@
       color: #333;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       position: relative;
+      opacity: 1;
+      transition: opacity 0.3s ease;
     }
     .antwort::after {
       content: '';
@@ -58,14 +65,26 @@
       border-right: 15px solid transparent;
       border-top: 20px solid #ffffff;
     }
+    .thinking {
+      font-size: 1.1rem;
+      margin-top: 20px;
+      color: #666;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
   </style>
 </head>
 <body>
   <h1>💩 Merten antwortet dir!</h1>
+  <p class="intro">Hi, ich bin Stefan – der wohl schlauste Bräutigam hier im Saal. Frag mich was! 😎</p>
   <img src="bild-von-merten.JPG" alt="Merten chillt" />
   <p><input type="text" placeholder="Frag was..." /></p>
   <button onclick="antwortGeben()">Antwort einholen (auf eigene Gefahr)</button>
-  <div class="antwort" id="antwort"></div>
+  <div class="thinking" id="thinking" style="display: none;">Merten denkt nach… 🤔</div>
+  <div class="antwort" id="antwort" style="display: none;"></div>
 
   <script>
     const sprueche = [
@@ -83,10 +102,18 @@
     ];
 
     function antwortGeben() {
-      const antwort = sprueche[Math.floor(Math.random() * sprueche.length)];
+      const thinking = document.getElementById("thinking");
       const antwortBox = document.getElementById("antwort");
-      antwortBox.innerText = antwort;
-      antwortBox.style.display = "inline-block";
+
+      antwortBox.style.display = "none";
+      thinking.style.display = "block";
+
+      setTimeout(() => {
+        const antwort = sprueche[Math.floor(Math.random() * sprueche.length)];
+        antwortBox.innerText = antwort;
+        thinking.style.display = "none";
+        antwortBox.style.display = "inline-block";
+      }, 1500);
     }
   </script>
 </body>
