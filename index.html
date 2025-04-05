@@ -124,7 +124,7 @@
         "Noch einen für Vera, einen für mich, und einen für dich!"
       ];
       const bräutigamAntworten = [
-        "Der mit dem Cuba Libre in der Hand, obviously.",
+        "Der mit dem Cuba Libre in der Hand.",
         "Ich bin der, der sich heute traut – und zwar alles.",
         "Der, der 'Ja' gesagt hat – freiwillig!"
       ];
@@ -135,7 +135,6 @@
       ];
       const abstimmenAntworten = [
         "Also, wir können ja abstimmen.",
-        "Demokratie ist hier möglich – aber nicht verpflichtend.",
         "Okay, Hand hoch – wer ist dafür?"
       ];
       const katzeAntworten = [
@@ -191,7 +190,16 @@
       ];
 
       setTimeout(() => {
-        let antwort = "Mh... da sollten wir zur Sicherheit erst mal einen Buff trinken.";
+        let antwort = "const fallbackAntworten = [
+  "Mh... da sollten wir zur Sicherheit erst mal einen Buff trinken.",
+  "Puh, da hilft nur ein Buff.",
+  "Dazu brauch ich erst mal einen Schluck.",
+  "Buff-Time! Danach reden wir weiter.",
+  "Ich sag mal nix – Buff regelt."
+];
+
+antwort = fallbackAntworten[Math.floor(Math.random() * fallbackAntworten.length)];
+
 
         const frageMatch = frage.toLowerCase();
 
