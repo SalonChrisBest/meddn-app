@@ -127,7 +127,7 @@
       antwortBox.textContent = "";
       thinking.style.visibility = "visible";
 
-      // Sound direkt beim Klick abspielen
+      // Sound direkt beim Klick
       if (sound) {
         sound.play().catch(e => console.log("Sound blockiert:", e));
       }
@@ -139,9 +139,16 @@
         if (frage.includes("wer ist der bräutigam")) {
           antwort = "Der mit dem Cuba Libre in der Hand, obviously.";
         } else if (
-          frage.includes("trinkst du noch ein") ||
-          frage.includes("trinken wir noch ein") ||
-          frage.includes("soll haag sein bier exen")
+          frage.includes("trink") ||
+          frage.includes("bier") ||
+          frage.includes("noch ein") ||
+          frage.includes("noch was") ||
+          frage.includes("bar") ||
+          frage.includes("saufen") ||
+          frage.includes("exen") ||
+          frage.includes("soll ich noch") ||
+          frage.includes("trinken wir noch") ||
+          frage.includes("trinkst du noch")
         ) {
           antwort = "Auf jeden Fall!";
         }
