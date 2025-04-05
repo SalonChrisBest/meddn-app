@@ -19,6 +19,7 @@
       width: 100%;
       max-width: 400px;
       border-radius: 10px;
+      transition: all 0.3s ease;
     }
     .intro {
       font-size: 1.2rem;
@@ -30,7 +31,7 @@
       font-size: 1rem;
       width: 80%;
       max-width: 300px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
     button {
       padding: 10px 20px;
@@ -40,6 +41,7 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      margin: 5px;
     }
     .antwort {
       position: absolute;
@@ -85,98 +87,86 @@
       cursor: pointer;
       margin-top: 30px;
     }
+    .gehirn {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      opacity: 0;
+      animation: brain-blink 1s infinite;
+      pointer-events: none;
+    }
+    @keyframes brain-blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+    .wickie {
+      animation: idee-blitz 0.6s ease-out;
+    }
+    @keyframes idee-blitz {
+      0% { filter: brightness(100%); }
+      50% { filter: brightness(200%); transform: scale(1.05); }
+      100% { filter: brightness(100%); transform: scale(1); }
+    }
   </style>
 </head>
 <body>
   <h1>💩 Merten antwortet dir!</h1>
   <p class="intro">Hi, ich bin Stefan – der wohl schlauste Bräutigam hier im Saal. Frag mich was! 😎</p>
   <div class="bild-container">
+    <div id="gehirn" class="gehirn">🧠</div>
     <img src="bild-von-merten.JPG" alt="Merten chillt" />
     <div class="antwort" id="antwort" onclick="antwortReaktion(event)"></div>
   </div>
+
   <p><input type="text" placeholder="Frag was..." id="frageInput" /></p>
   <button onclick="antwortGeben()">Antwort einholen (auf eigene Gefahr)</button>
+  <button onclick="zufallsSpruch()">Was würde Stefan noch sagen?</button>
+
   <div class="thinking" id="thinking">Merten denkt nach… 🤔</div>
   <div class="hidden-trigger" onclick="triggerGeheimnis()">(Nicht klicken!)</div>
+
   <audio id="bingSound">
     <source src="https://www.soundjay.com/button/sounds/button-16.mp3" type="audio/mpeg">
   </audio>
 
   <script>
+    const antwortBox = document.getElementById("antwort");
+    const frageInput = document.getElementById("frageInput");
+    const thinking = document.getElementById("thinking");
+    const sound = document.getElementById("bingSound");
+    const gehirn = document.getElementById("gehirn");
+    const bild = document.querySelector(".bild-container img");
+
+    const alleAntworten = [
+      "Ja aaaaaber…",
+      "Noch ein Cuba libre?",
+      "Ich würd da erst mal ein Sicherheits-Buff trinken.",
+      "Ich steh im Kaufvertrag, das ist meine Katze!",
+      "Ich glaub so ein kleines 💩 muss ich noch legen.",
+      "Wenn du’s rauchst – dann bitte richtig.",
+      "Früher war ich mal schnell.",
+      "Also, wir können ja abstimmen.",
+      "Warte ich hab da ein Video …",
+      "Schieß schieß schieß!",
+      "Wer ist eigentlich dafür, dass Haag sein Bier ext?",
+      "Outfit approved – von mir selbst.",
+      "Pizza? Ich bin Stefano – Herrscher über den Pizzastein!",
+      "TuS Dexheim seit 1848 – ich war die Nummer 9!",
+      "Ich philosophiere nur mit Cuba Libre in der Hand.",
+      "Ich sag nur was, wenn’s knallt.",
+      "Ich bin ein Vulkan aus Gefühl und Cuba Libre.",
+      "Noch einen für Vera, einen für mich – und einen für dich!",
+      "Mh... da sollten wir zur Sicherheit erst mal einen Buff trinken."
+    ];
+
     function antwortGeben() {
-      const antwortBox = document.getElementById("antwort");
-      const frage = document.getElementById("frageInput").value.toLowerCase();
-      const thinking = document.getElementById("thinking");
-      const sound = document.getElementById("bingSound");
-
-      antwortBox.style.display = "none";
-      antwortBox.innerHTML = "";
-      thinking.style.visibility = "visible";
-
-      if (sound) sound.play().catch(e => console.log("Sound blockiert:", e));
-
-      // Antwort-Pools
-      const trinkenAntworten = [
-        "Auf jeden Fall!",
-        "Nur wenn du mitziehst.",
-        "Ich hab schon vorgelegt.",
-        "Was für 'ne Frage – natürlich!",
-        "Noch einen für Vera, einen für mich, und einen für dich!"
-      ];
-      const fallbackAntworten = [
-        "Mh... da sollten wir zur Sicherheit erst mal einen Buff trinken.",
-        "Buff-Time! Danach reden wir weiter.",
-        "Ich brauch nen Buff, um diese Frage zu verdauen.",
-        "Puh… schwierige Frage. Erst mal ein Buff.",
-        "Ich sag da nix – Buff-Time ist angesagt.",
-        "Buff regelt. Immer.",
-        "Ein Buff auf diese Frage!"
-      ];
-      const emotionAntworten = [
-        "Ich fühl mich wie ein Champagnerkorken kurz vor dem Knall!",
-        "Nervös? Niemals. Nur leicht schaumgebremst.",
-        "Mir geht’s wie der Stimmung – bestens.",
-        "Ich bin ein Vulkan aus Gefühl und Cuba Libre."
-      ];
-      const fussballAntworten = [
-        "Ich war die Nummer 9 – jetzt Alt-Herren bei TuS Dexheim. Chris klatscht immer noch.",
-        "TuS Dexheim. Seit 1848. Ich war die 9, Chris war die Tribüne.",
-        "Ballkunst? Klar. Nur mein Knie weiß das nicht.",
-        "Alt, aber gefährlich. Vor allem im Strafraum."
-      ];
-      const pizzaAntworten = [
-        "Ich bin Stefano – Herrscher über den Pizzastein!",
-        "Meine Pizza macht jede Nonna nervös.",
-        "Kochen kann ich. Aber Pizza? Ich leb sie.",
-        "In meiner Küche regiert der Teig."
-      ];
-      const hochzeitAntworten = [
-        "Vera ist mein Ja-Wort seit dem 4.4.2025.",
-        "Geheiratet? Klar. Und wie!",
-        "Die schönste Frau im Raum gehört mir. Und heißt Vera.",
-        "Ich bin offiziell unter der Haube – seit dem 4.4.2025."
-      ];
-      const styleAntworten = [
-        "Outfit approved – von mir selbst.",
-        "Anzug sitzt. Charme auch.",
-        "Das Styling kam gratis zur Hochzeit.",
-        "Ich trag das, was andere nicht tragen können."
-      ];
-      const mikroAntworten = [
-        "Ich spreche nur, wenn’s Drinks gibt.",
-        "Mikrofon? Ich brauch keine Technik, um zu glänzen.",
-        "Ich sag nur was, wenn’s knallt.",
-        "Wer braucht ’ne Rede, wenn er aussieht wie ich?"
-      ];
-      const sinnAntworten = [
-        "Warum? Weil ich’s kann.",
-        "Der Sinn des Lebens? Vera. Und Pizza.",
-        "Wozu das alles? Für genau diesen Moment.",
-        "Ich philosophiere nur mit Cuba Libre in der Hand."
-      ];
+      const frage = frageInput.value.toLowerCase();
+      zeigeDenkmoment();
 
       setTimeout(() => {
-        let antwort = fallbackAntworten[Math.floor(Math.random() * fallbackAntworten.length)];
+        let antwort = alleAntworten[Math.floor(Math.random() * alleAntworten.length)];
 
         const matheMatch = frage.match(/([-+]?\d+(\.\d+)?)(\s*[\+\-\*\/]\s*)([-+]?\d+(\.\d+)?)/);
         if (matheMatch) {
@@ -189,12 +179,8 @@
               `Mathe-König meldet sich: ${result}.`
             ];
             antwort = matheAntworten[Math.floor(Math.random() * matheAntworten.length)];
-          } catch {
-            antwort = fallbackAntworten[Math.floor(Math.random() * fallbackAntworten.length)];
-          }
-        } else if (
-          frage.includes("video") || frage.includes("aufnahme") || frage.includes("beweis") || frage.includes("clip")
-        ) {
+          } catch {}
+        } else if (frage.includes("video") || frage.includes("aufnahme") || frage.includes("beweis") || frage.includes("clip")) {
           antwortBox.innerHTML = `
             Warte… ich hab da ein Video. 😎
             <br><br>
@@ -203,65 +189,45 @@
               Dein Browser kann das Video leider nicht abspielen.
             </video>
           `;
-          thinking.style.visibility = "hidden";
-          antwortBox.style.display = "block";
+          schließeDenkmoment();
           return;
-        } else if (
-          frage.includes("trink") || frage.includes("bier") || frage.includes("shot") ||
-          frage.includes("saufen") || frage.includes("prost") || frage.includes("durstig") ||
-          frage.includes("bar") || frage.includes("alkohol") || frage.includes("glas")
-        ) {
-          antwort = trinkenAntworten[Math.floor(Math.random() * trinkenAntworten.length)];
-        } else if (
-          frage.includes("wie geht") || frage.includes("fühl") || frage.includes("nervös") ||
-          frage.includes("aufgeregt") || frage.includes("gut drauf") || frage.includes("laune")
-        ) {
-          antwort = emotionAntworten[Math.floor(Math.random() * emotionAntworten.length)];
-        } else if (
-          frage.includes("fußball") || frage.includes("nummer 9") || frage.includes("verein") ||
-          frage.includes("sport") || frage.includes("dexheim") || frage.includes("spielst")
-        ) {
-          antwort = fussballAntworten[Math.floor(Math.random() * fussballAntworten.length)];
-        } else if (
-          frage.includes("pizza") || frage.includes("kochen") || frage.includes("küche") ||
-          frage.includes("essen") || frage.includes("ofen") || frage.includes("steak") || frage.includes("teig")
-        ) {
-          antwort = pizzaAntworten[Math.floor(Math.random() * pizzaAntworten.length)];
-        } else if (
-          frage.includes("hochzeit") || frage.includes("geheiratet") || frage.includes("vera") ||
-          frage.includes("braut") || frage.includes("ehe")
-        ) {
-          antwort = hochzeitAntworten[Math.floor(Math.random() * hochzeitAntworten.length)];
-        } else if (
-          frage.includes("anzug") || frage.includes("outfit") || frage.includes("kleidung") ||
-          frage.includes("style") || frage.includes("look")
-        ) {
-          antwort = styleAntworten[Math.floor(Math.random() * styleAntworten.length)];
-        } else if (
-          frage.includes("mikro") || frage.includes("bühne") || frage.includes("rede") ||
-          frage.includes("ansprache") || frage.includes("sprich")
-        ) {
-          antwort = mikroAntworten[Math.floor(Math.random() * mikroAntworten.length)];
-        } else if (
-          frage.includes("sinn") || frage.includes("leben") || frage.includes("warum") ||
-          frage.includes("wozu") || frage.includes("philosophiere")
-        ) {
-          antwort = sinnAntworten[Math.floor(Math.random() * sinnAntworten.length)];
         }
 
         antwortBox.innerText = antwort;
-        thinking.style.visibility = "hidden";
-        antwortBox.style.display = "block";
-      }, 1500);
+        schließeDenkmoment();
+      }, 1200);
+    }
+
+    function zufallsSpruch() {
+      zeigeDenkmoment();
+      setTimeout(() => {
+        const antwort = alleAntworten[Math.floor(Math.random() * alleAntworten.length)];
+        antwortBox.innerText = antwort;
+        schließeDenkmoment();
+      }, 1200);
+    }
+
+    function zeigeDenkmoment() {
+      antwortBox.style.display = "none";
+      antwortBox.innerHTML = "";
+      thinking.style.visibility = "visible";
+      gehirn.style.opacity = "1";
+    }
+
+    function schließeDenkmoment() {
+      gehirn.style.opacity = "0";
+      bild.classList.add("wickie");
+      setTimeout(() => bild.classList.remove("wickie"), 600);
+      thinking.style.visibility = "hidden";
+      antwortBox.style.display = "block";
     }
 
     function antwortReaktion(event) {
       if (event && event.target.tagName === "VIDEO") return;
-      document.getElementById("antwort").innerText = "Tja. So bin ich.";
+      antwortBox.innerText = "Tja. So bin ich.";
     }
 
     function triggerGeheimnis() {
-      const antwortBox = document.getElementById("antwort");
       antwortBox.innerText = "Ey! Hast du nichts Besseres zu tun?!";
       antwortBox.style.display = "block";
     }
