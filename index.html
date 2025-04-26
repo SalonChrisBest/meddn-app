@@ -21,6 +21,17 @@
       border-radius: 10px;
       transition: all 0.3s ease;
     }
+    .beer-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 215, 0, 0.6);
+      border-radius: 10px;
+      display: none;
+      pointer-events: none;
+    }
     .intro {
       font-size: 1.2rem;
       margin-bottom: 25px;
@@ -116,13 +127,15 @@
   <p class="intro">Hi, ich bin Stefan – der wohl schlauste Bräutigam hier im Saal. Frag mich was! 😎</p>
   <div class="bild-container">
     <div id="gehirn" class="gehirn">🧠</div>
-    <img src="bild-von-merten.JPG" alt="Merten chillt" />
+    <img id="stefanBild" src="bild-von-merten.JPG" alt="Merten chillt" />
+    <div class="beer-overlay" id="beerOverlay"></div>
     <div class="antwort" id="antwort" onclick="antwortReaktion(event)"></div>
   </div>
 
   <p><input type="text" placeholder="Frag was..." id="frageInput" /></p>
   <button onclick="antwortGeben()">Antwort einholen (auf eigene Gefahr)</button>
   <button onclick="zufallsSpruch()">Was würde Stefan noch sagen?</button>
+  <button onclick="entscheidung()">Stefans Entscheidung (Ja/Nein)</button>
 
   <div class="thinking" id="thinking">Merten denkt nach… 🤔</div>
   <div class="hidden-trigger" onclick="triggerGeheimnis()">(Nicht klicken!)</div>
@@ -137,7 +150,8 @@
     const thinking = document.getElementById("thinking");
     const sound = document.getElementById("bingSound");
     const gehirn = document.getElementById("gehirn");
-    const bild = document.querySelector(".bild-container img");
+    const bild = document.getElementById("stefanBild");
+    const beerOverlay = document.getElementById("beerOverlay");
 
     const alleAntworten = [
       "Ja aaaaaber…",
@@ -167,6 +181,11 @@
 
       setTimeout(() => {
         let antwort = alleAntworten[Math.floor(Math.random() * alleAntworten.length)];
+
+        if (frage.includes("bier") && frage.includes("stefan") && frage.includes("exen")) {
+          beerOverlay.style.display = "block";
+          setTimeout(() => beerOverlay.style.display = "none", 3000);
+        }
 
         const matheMatch = frage.match(/([-+]?\d+(\.\d+)?)(\s*[\+\-\*\/]\s*)([-+]?\d+(\.\d+)?)/);
         if (matheMatch) {
@@ -205,6 +224,15 @@
         antwortBox.innerText = antwort;
         schließeDenkmoment();
       }, 1200);
+    }
+
+    function entscheidung() {
+      zeigeDenkmoment();
+      setTimeout(() => {
+        const antwort = Math.random() > 0.5 ? "Ja." : "Nein.";
+        antwortBox.innerText = antwort;
+        schließeDenkmoment();
+      }, 800);
     }
 
     function zeigeDenkmoment() {
