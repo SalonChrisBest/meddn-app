@@ -45,14 +45,21 @@
       margin-bottom: 10px;
     }
     button {
-      padding: 10px 20px;
-      font-size: 1rem;
+      padding: 15px 25px;
+      font-size: 1.2rem;
       background-color: black;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      margin: 5px;
+      margin: 8px;
+    }
+    #entscheidungsButton {
+      background-color: gold;
+      color: black;
+      font-weight: bold;
+      font-size: 1.4rem;
+      padding: 18px 28px;
     }
     .antwort {
       position: absolute;
@@ -92,12 +99,6 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0; }
     }
-    .hidden-trigger {
-      font-size: 0.8rem;
-      color: #aaa;
-      cursor: pointer;
-      margin-top: 30px;
-    }
     .gehirn {
       position: absolute;
       top: -30px;
@@ -132,10 +133,11 @@
     <div class="antwort" id="antwort" onclick="antwortReaktion(event)"></div>
   </div>
 
+  <button id="entscheidungsButton" onclick="entscheidung()">Stefans Entscheidung (Ja/Nein)</button>
+
   <p><input type="text" placeholder="Frag was..." id="frageInput" /></p>
   <button onclick="antwortGeben()">Antwort einholen (auf eigene Gefahr)</button>
   <button onclick="zufallsSpruch()">Was würde Stefan noch sagen?</button>
-  <button onclick="entscheidung()">Stefans Entscheidung (Ja/Nein)</button>
 
   <div class="thinking" id="thinking">Merten denkt nach… 🤔</div>
   <div class="hidden-trigger" onclick="triggerGeheimnis()">(Nicht klicken!)</div>
